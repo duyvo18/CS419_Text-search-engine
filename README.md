@@ -16,6 +16,6 @@
 
 * `indexer.py` defines the indexing process
 * `search_engine.py` defines the searching function
-* `main.py` defines the streamlit interface and call `search(keyword)` in `search_engine.py` to query
+* `main.py` defines the streamlit interface and call `search_engine.search(keyword)` to query
 * `crawler/` defines the Scrapy crawler
 * The crawled data is in `crawler/output.html`
