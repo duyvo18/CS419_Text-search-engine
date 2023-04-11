@@ -27,10 +27,10 @@ class NewsSpider(scrapy.Spider):
             
     def parse_article(self, response):
         title = response.css('h1.title-detail').extract_first()
-        content = ' '.join(response.css('.Normal').extract())
+        content = ''.join(response.css('p.Normal').extract())
         
         title = re.search(r'<h1[^>]*>(.*?)</h1>', title).group(1)
-        content = re.search(r'<p[^>]*>(.*?)</p>', content).group(1)
+        content = ' '.join(re.findall(r'<p[^>]*>(.*?)</p>', content))
         
         if title != None and content != None:
             with open('output.html', 'a', encoding='utf-8') as f:
