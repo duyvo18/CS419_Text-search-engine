@@ -2,9 +2,10 @@ import os
 
 from whoosh.index import create_in
 from whoosh.fields import *
+from unidecode import unidecode
 
 def index():
-    schema = Schema(title=TEXT(stored=True), content=TEXT(stored=True))
+    schema = Schema(title=TEXT(stored=True), content=TEXT(stored=True), data=TEXT(stored=True))
 
     if not os.path.exists("index"):
         os.mkdir("index")
@@ -12,17 +13,20 @@ def index():
 
     writer = ix.writer()
 
-    with open("crawler\output.html", "r", encoding="utf-8") as f:
+    with open(r"crawler\output.html", "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
-            line = line.lower()
             
             if line.startswith("<h1>"):
                 title = line[4:-5]
                 content = ""
             elif line.startswith("<article>"):
                 content = line[9:-10]
-                writer.add_document(title=title, content=content)
+
+                data = content.lower()
+                data = unidecode(data)
+                
+                writer.add_document(title=title, content=content, data=data)
 
     writer.commit()
 
